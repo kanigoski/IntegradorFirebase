@@ -42,21 +42,20 @@ export class DashboardComponent implements OnInit{
         this.tomadas = this.tomadasCol.snapshotChanges()
           	.map(actions => {
 				this.consumo_mensal = 0;
-				console.log("1");
+				this.media_por_tomada = [];
+
             	return actions.map(a => {
               		const data = a.payload.doc.data() as Tomadas;
               		const id = a.payload.doc.id;
 					this.consumoAparelho = 0;
 
-					console.log("Teste: " + this.consumo_mensal);
-
  	            	data.gastos.map(gasto => {
 						const corrente = gasto.corrente;
 						const tensao = gasto.tensao;
 
-						this.consumo_mensal = this.consumo_mensal + ((tensao * (corrente * 0.01) * 30 / 1000));
-						this.consumoAparelho = this.consumo_mensal;
-
+						this.consumo_mensal = this.consumo_mensal + ((tensao * (corrente * 1) / 1000));
+						this.consumoAparelho = this.consumoAparelho + ((tensao * (corrente * 1) / 1000));
+						
 					})
 
 					this.media_por_tomada.push({id: id, descricao: data.descricao, consumo: this.consumoAparelho});
