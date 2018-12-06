@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Timestamp } from 'rxjs';
 import 'rxjs/add/operator/map';
 
 declare var $:any;
 
 interface Tomadas {
   descricao: string;
-  consumo: string;
-}
-
-interface Gastos extends Tomadas {
-  teste: string;
+  gastos: any[];
+  ligado: boolean;
+  local: string;
 }
 
 @Component({
@@ -23,7 +21,6 @@ interface Gastos extends Tomadas {
 
 export class DashboardComponent implements OnInit{
     aparelhos: any[];
-
     tomadasCol: AngularFirestoreCollection<Tomadas>;
     tomadas: any;
 
@@ -31,18 +28,29 @@ export class DashboardComponent implements OnInit{
     }
 
     valor_kwh = 0.645310;
-    consumo_mensal = 258;
+    consumo_mensal = 0;
     media_hora = 4;
     media_dia = 5;
 
     ngOnInit(){
         this.tomadasCol = this.db.collection('tomadas');
-        console.log(this.tomadasCol);
         this.tomadas = this.tomadasCol.snapshotChanges()
           .map(actions => {
             return actions.map(a => {
               const data = a.payload.doc.data() as Tomadas;
               const id = a.payload.doc.id;
+
+              console.log(data.gastos
+                .map(gasto => {
+                  const corrente = gasto.corrente;
+                  const tensao = gasto.tensao;
+
+                  this.consumo_mensal = this.consumo_mensal + ((tensao * (corrente*10) * 30 / 1000));
+
+                  console.log(this.consumo_mensal);
+                })
+              );
+
               return {id, data};
             })
           })
