@@ -34,6 +34,7 @@
     "firebase-admin": "^6.3.0",
     "jquery": "1.12.4",
     "moment": "2.18.1",
+    "ngx-order-pipe": "^2.0.2",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
     "zone.js": "0.8.4"

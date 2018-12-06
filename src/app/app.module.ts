@@ -26,6 +26,8 @@ import { UpgradeComponent }   from './upgrade/upgrade.component';
 
 import { environment } from 'environments/environment';
 
+import { OrderModule } from 'ngx-order-pipe';
+
 
 var fireBaseConfig = {
   apiKey: "AIzaSyCt96hrdWLHySCnYZgieS-BV_zagm-k-O4",
@@ -46,9 +48,11 @@ var fireBaseConfig = {
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    UpgradeComponent
+    UpgradeComponent,
+    AppComponent
   ],
   imports: [
+    BrowserModule, OrderModule,
     BrowserModule,
     RouterModule.forRoot(AppRoutes),
     SidebarModule,

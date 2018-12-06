@@ -11,17 +11,16 @@
                         </div>
                         <div class="col-xs-10">
                             <div class="numbers">
-                                <p>Média Consumo</p>
+                                <p>Média Consumo / Hora</p>
                                 {{media_hora}} kWh
                             </div>
                         </div>
                     </div>
                     <div class="footer">
                         <hr />
-                        <select name="" id="" class="form-control border-input">
-                            <option value="">Hora</option>
-                            <option value="">Dia</option>
-                        </select>
+                        <div class="stats">
+                            <i class="ti-calendar"></i> Last day
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,7 +36,7 @@
                         </div>
                         <div class="col-xs-10">
                             <div class="numbers">
-                                <p>Consumo Mensal</p>
+                                <p>Média Consumo / Mês</p>
                                 {{consumo_mensal | number:0}} kWh
                             </div>
                         </div>
@@ -61,9 +60,12 @@
                             </div>
                         </div>
                         <div class="col-xs-10">
-                            <div class="numbers">
-                                <p>Maior custo</p>
-                                {{desc_maiorCusto}}
+                            <div class="numbers" *ngFor="let media_tomada of media_por_tomada | orderBy: 'consumo': true; let i=index">
+                                    <span *ngIf="i<1">
+                                    <p>Maior custo</p>
+                                    {{ media_tomada.descricao }}
+                                </span>
+                                
                             </div>
                         </div>
                     </div>

@@ -16,7 +16,7 @@ interface Tomadas {
 @Component({
     selector: 'dashboard-cmp',
     moduleId: module.id,
-    templateUrl: 'dashboard.component.html'
+    templateUrl: 'dashboard.component.html',
 })
 
 export class DashboardComponent implements OnInit{
@@ -41,18 +41,22 @@ export class DashboardComponent implements OnInit{
 
         this.tomadas = this.tomadasCol.snapshotChanges()
           	.map(actions => {
+				this.consumo_mensal = 0;
+				console.log("1");
             	return actions.map(a => {
               		const data = a.payload.doc.data() as Tomadas;
               		const id = a.payload.doc.id;
 					this.consumoAparelho = 0;
 
+					console.log("Teste: " + this.consumo_mensal);
+
  	            	data.gastos.map(gasto => {
 						const corrente = gasto.corrente;
 						const tensao = gasto.tensao;
 
-						this.consumo_mensal = this.consumo_mensal + ((tensao * (corrente * 10) * 30 / 1000));
+						this.consumo_mensal = this.consumo_mensal + ((tensao * (corrente * 0.01) * 30 / 1000));
 						this.consumoAparelho = this.consumo_mensal;
-						
+
 					})
 
 					this.media_por_tomada.push({id: id, descricao: data.descricao, consumo: this.consumoAparelho});
@@ -60,44 +64,7 @@ export class DashboardComponent implements OnInit{
 					console.log(this.media_por_tomada);
               	return {id, data};
 			})
-
-    	})
-
-        var dataSales = {
-          labels: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
-          series: [
-             [287, 385, 490, 562, 594, 626],
-            [67, 152, 193, 240, 387, 435],
-            [23, 113, 67, 108, 190, 239]
-          ]
-        };
-
-        var optionsSales = {
-          	low: 0,
-          	high: 1000,
-          	showArea: true,
-          	height: "245px",
-          	axisX: {
-            	showGrid: false,
-          	},
-          	lineSmooth: Chartist.Interpolation.simple({
-            	divisor: 3
-          	}),
-          	showLine: true,
-          	showPoint: false,
-        };
-
-        var responsiveSales: any[] = [
-          	['screen and (max-width: 640px)', {
-            	axisX: {
-              		labelInterpolationFnc: function (value) {
-                		return value[0];
-              		}
-            	}
-          	}]
-        ];
-
-        new Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
+		})
 
         var data = {
           	labels: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00'],
